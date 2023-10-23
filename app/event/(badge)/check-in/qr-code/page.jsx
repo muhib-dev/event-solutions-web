@@ -1,10 +1,11 @@
 "use client";
 import { useEffect, useCallback, useRef, useState } from "react";
+import { Html5Qrcode, Html5QrcodeSupportedFormats } from "html5-qrcode";
 import { useRouter } from "next/navigation";
 import { BsQrCodeScan } from "react-icons/bs";
 import { TbUserSearch } from "react-icons/tb";
-import { Html5Qrcode, Html5QrcodeSupportedFormats } from "html5-qrcode";
 import { catchError } from "@/utils/catchError";
+
 import useAuth from "@/hooks/useAuth";
 import useAxiosPrivate from "@/hooks/useAxiosPrivate";
 import TicketList from "@/components/tickets/TicketList";
@@ -14,8 +15,7 @@ import toast from "react-hot-toast";
 
 const config = {
   fps: 10,
-  qrbox: { width: 500, height: 450 },
-  aspectRatio: 1,
+  qrbox: { width: 400, height: 350 },
 };
 
 const elementScanner = "render-qr-code";
@@ -135,14 +135,14 @@ const QrCodePage = () => {
 
       {isTickets && <TicketList tickets={tickets} setTickets={setTickets} />}
 
-      <div className="lg:w-1/2 max-h-40 mx-auto">
+      <div className="lg:w-1/2 mx-auto">
         {scanResultLoading && (
           <div className="flex justify-center items-center gap-3">
             <Spinner /> <p>loading...</p>
           </div>
         )}
 
-        <div className="shadow rounded overflow-hidden my-6">
+        <div className="shadow-md rounded overflow-hidden my-6">
           {isNotPermission && (
             <div className="text-center px-5 py-6">
               <p className="text-red-600 text-xl mb-4">

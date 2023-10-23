@@ -4,6 +4,7 @@ import { useReactToPrint } from "react-to-print";
 import { BsTelephone } from "react-icons/bs";
 import { CiMail } from "react-icons/ci";
 import { MdPrint } from "react-icons/md";
+
 import Modal from "../Modal";
 import QRCode from "react-qr-code";
 import useAxiosPrivate from "@/hooks/useAxiosPrivate";
@@ -43,6 +44,20 @@ const TicketList = ({ tickets, setTickets }) => {
 
       try {
         await api.post("/api/event-registration/ticket/print", { ticketKeys });
+
+        const updatedTickets = tickets.map((item) => {
+          if (item.printCount === 0 && ticketKeys.includes(item.ticketKey)) {
+            return {
+              ...item,
+              printCount: 1,
+              isChecked: false,
+            };
+          }
+          return item;
+        });
+
+        setTickets(updatedTickets);
+        setOpenModal(false);
       } catch (error) {
         console.log(error);
       } finally {

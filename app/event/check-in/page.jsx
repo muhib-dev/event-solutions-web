@@ -1,12 +1,13 @@
 "use client";
 import "@/styles/check-in.css";
-import Link from "next/link";
-import { BsQrCodeScan } from "react-icons/bs";
-import { TbUserSearch } from "react-icons/tb";
-import Header from "../(badge)/Header";
-import useAuth from "@/hooks/useAuth";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { BsQrCodeScan } from "react-icons/bs";
+import { TbUserSearch } from "react-icons/tb";
+
+import Header from "../(badge)/Header";
+import useAuth from "@/hooks/useAuth";
+import Link from "next/link";
 
 const CheckInPage = () => {
   const { isAuthenticated } = useAuth();
