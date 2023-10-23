@@ -1,0 +1,8 @@
+/* custom radial-gradient bg*/
+.custom-gradient-bg {
+  background: radial-gradient(
+    90.77% 90.77% at 50% 90.77%,
+    #594b8d 0%,
+    #000000 100%
+  );
+}

@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"] {
+    appearance: textfield !important;
+    margin: 0;
+  }
+}
+
+.input {
+  @apply border border-[#E9E9E9] text-gray-900 text-sm rounded-lg
+  block w-full px-2.5 py-3 focus:border-gray-100 shadow-[1px_1px_15px_rgba(133,133,133,0.17)];
+}
+
+.input-lg {
+  @apply h-[3.75rem] pl-6 pr-6 text-lg;
+}
