@@ -8,6 +8,7 @@ import Modal from "../Modal";
 import QRCode from "react-qr-code";
 import useAxiosPrivate from "@/hooks/useAxiosPrivate";
 import toast from "react-hot-toast";
+import classNames from "classnames";
 
 const TicketList = ({ tickets, setTickets }) => {
   const api = useAxiosPrivate();
@@ -80,33 +81,39 @@ const TicketList = ({ tickets, setTickets }) => {
 
   return (
     <>
-      <h1 className="text-2xl font-semibold text-[#3CA119] text-center mb-6">
+      <h1 className="text-2xl font-semibold text-[#3CA119] text-center">
         {tickets?.length} Ticket(s) Found!
       </h1>
 
-      <ul className="flex flex-col">
+      <ul>
         {tickets.map((item, index) => (
           <li
             key={item.ticketKey}
-            className="flex items-center justify-between py-6 px-4 border-b last:border-0"
+            className="flex flex-col gap-5 md:gap-0 md:flex-row md:items-center justify-between py-6 px-4 border-b last:border-0"
           >
             <div>
-              <div className="flex gap-3 items-center">
+              <div className="flex gap-3 sm:items-center">
                 <input
+                  title="Checked to print"
+                  className="toggle toggle-secondary mt-1 lg:mt-0"
+                  type="checkbox"
                   disabled={item.printCount > 0}
                   id={item.ticketKey}
-                  type="checkbox"
                   checked={item.isChecked}
                   onChange={(e) => onChangeCheckTicket(e, index)}
-                  className="checkbox rounded-full checkbox-lg"
                 />
+
                 <label
                   htmlFor={item.ticketKey}
-                  className="text-2xl font-bold text-[#3E3E3E] cursor-pointer"
+                  className={classNames({
+                    "text-lg md:text-2xl md:font-bold text-[#3E3E3E] cursor-pointer": true,
+                    "cursor-not-allowed text-[#7f7f7f]": item.printCount > 0,
+                  })}
                 >
                   {item.ticketOwnerName}
                 </label>
-                <em className="text-base font-normal text-[#6C6B6B]">
+
+                <em className="text-base whitespace-nowrap font-normal text-[#6C6B6B]">
                   {item.ticketCategory}
                 </em>
               </div>
@@ -131,11 +138,10 @@ const TicketList = ({ tickets, setTickets }) => {
             {item.printCount > 0 ? (
               <button
                 disabled
-                className="btn btn-outline  text-base disabled:text-gray-500"
+                className="btn btn-outline text-[15px] disabled:text-gray-500 border-0 font-normal"
                 type="button"
               >
                 Printed: {item.printCount}
-                <MdPrint className="text-xl" />
               </button>
             ) : (
               <button
@@ -165,6 +171,7 @@ const TicketList = ({ tickets, setTickets }) => {
         </button>
       </div>
 
+      {/* print preview modal */}
       <Modal open={openModal}>
         <div
           ref={printableComponentRef}
@@ -173,7 +180,7 @@ const TicketList = ({ tickets, setTickets }) => {
           {printableTickets &&
             printableTickets.map((item) => (
               <div
-                className="flex flex-col items-center gap-4 mt-6"
+                className="flex flex-col items-center text-center gap-4 mt-6"
                 key={item.ticketKey}
               >
                 <h1 className="text-2xl font-bold">{item.ticketOwnerName}</h1>

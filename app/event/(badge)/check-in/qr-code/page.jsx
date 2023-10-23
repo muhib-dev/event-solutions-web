@@ -115,7 +115,7 @@ const QrCodePage = () => {
 
   return (
     <div className="container mx-auto">
-      <div className="flex gap-5 justify-center items-center mt-8 mb-6">
+      <div className="flex flex-col md:flex-row gap-5 justify-center items-center mt-8 mb-6">
         <button
           onClick={onResetFoundTickets}
           type="button"

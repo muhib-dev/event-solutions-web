@@ -88,7 +88,7 @@ const SearchPage = () => {
 
   return (
     <div className="container mx-auto">
-      <div className="flex gap-5 justify-center items-center my-8">
+      <div className="flex flex-col md:flex-row gap-5 justify-center items-center my-8">
         <Link href={"/event/check-in/qr-code"}>
           <button type="button" className="btn btn-primary text-white">
             <BsQrCodeScan className="inline-block text-2xl" />
@@ -114,7 +114,7 @@ const SearchPage = () => {
             <p className="text-[17px] text-[#767676]">
               Search by one of the following
             </p>
-            <h1 className="text-2xl font-semibold text-[#505050] mt-1">
+            <h1 className="text-lg md:text-2xl font-semibold text-[#505050] mt-1">
               Ticket Number, Email, Phone Number
             </h1>
           </div>
@@ -124,7 +124,7 @@ const SearchPage = () => {
             <form onSubmit={onSubmitSearch}>
               <div className="relative">
                 <input
-                  className="input !text-lg"
+                  className="input md:!text-lg"
                   type="search"
                   value={searchText}
                   onChange={(e) => setSearchText(e.target.value)}

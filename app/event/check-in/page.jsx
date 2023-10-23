@@ -18,12 +18,12 @@ const CheckInPage = () => {
   }, [isAuthenticated, router]);
 
   return (
-    <div className="custom-gradient-bg min-h-screen">
+    <div className="custom-gradient-bg min-h-screen px-4 lg:px-0">
       <Header isTextWhite />
 
       <div className="flex flex-col items-center">
         <div className="text-white text-center">
-          <h2 className="text-3xl md:text-3xl font-semibold mt-20">
+          <h2 className="text-3xl md:text-3xl font-semibold mt-10 md:mt-20">
             Session Check-in
           </h2>
           <p className="md:text-xl mt-2">
@@ -31,11 +31,11 @@ const CheckInPage = () => {
           </p>
         </div>
 
-        <div className="text-white flex flex-col md:flex-row gap-8 mt-16">
+        <div className="text-white flex flex-col md:flex-row gap-8 mt-8 md:mt-16">
           <Link href={"/event/check-in/qr-code"}>
             <div className="bg-[#47436D] rounded-[15px] p-10 shadow-[1px_5px_15px_#00000024] text-center">
               <BsQrCodeScan className="inline-block text-6xl" />
-              <h3 className="text-2xl md:text-3xl font-semibold mt-5">
+              <h3 className="text-2xl lg:text-3xl font-semibold mt-5">
                 Check in with QR code
               </h3>
               <p className="mt-2 text-lg">Badge QR code</p>
@@ -45,7 +45,7 @@ const CheckInPage = () => {
           <Link href={"/event/check-in/search"}>
             <div className="bg-[#47436D] rounded-[15px] p-10 shadow-[1px_5px_15px_#00000024] text-center">
               <TbUserSearch className="inline-block text-6xl" />
-              <h3 className="text-2xl md:text-3xl font-semibold mt-5">
+              <h3 className="text-2xl lg:text-3xl font-semibold mt-5">
                 Check in with Search
               </h3>
               <p className="mt-2 text-lg">
