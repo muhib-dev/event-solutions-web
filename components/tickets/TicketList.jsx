@@ -121,7 +121,8 @@ const TicketList = ({ tickets, setTickets }) => {
                 <label
                   htmlFor={item.ticketKey}
                   className={classNames({
-                    "text-lg md:text-2xl md:font-bold text-[#3E3E3E] cursor-pointer": true,
+                    "text-lg md:text-2xl md:font-bold text-[#3E3E3E]": true,
+                    "cursor-pointer": item.printCount === 0,
                     "cursor-not-allowed text-[#7f7f7f]": item.printCount > 0,
                   })}
                 >
