@@ -51,8 +51,8 @@ const Login = () => {
   const onSubmitLogin = handleSubmit(async (data) => {
     try {
       setIsLoadingSubmit(true);
-      await login(data.userName, data.password);
 
+      await login(data.userName, data.password);
       router.replace("/event/check-in");
     } catch (error) {
       setLoginError(catchError(error));

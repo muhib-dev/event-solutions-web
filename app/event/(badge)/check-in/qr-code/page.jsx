@@ -60,7 +60,10 @@ const QrCodePage = () => {
         }));
 
         setTickets(mappedData);
-        html5QrCode.current.stop();
+
+        if (html5QrCode.current.isScanning) {
+          html5QrCode.current.stop();
+        }
       } catch (error) {
         console.log(error);
         const meassage = catchError(error);

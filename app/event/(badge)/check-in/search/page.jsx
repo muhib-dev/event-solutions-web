@@ -11,6 +11,7 @@ import useAxiosPrivate from "@/hooks/useAxiosPrivate";
 import TicketList from "@/components/tickets/TicketList";
 import Link from "next/link";
 import toast from "react-hot-toast";
+import { encodeURI } from "@/utils/encodeURI";
 
 const SearchPage = () => {
   const { isAuthenticated } = useAuth();
@@ -35,7 +36,7 @@ const SearchPage = () => {
     setLoadingSearch(true);
 
     try {
-      const url = `/api/event-registration/find/${searchText}`;
+      const url = `/api/event-registration/find/${encodeURI(searchText)}`;
       const response = await api.get(url);
 
       if (response.data.succeeded) {
@@ -58,7 +59,9 @@ const SearchPage = () => {
     setLoadingSearch(true);
 
     try {
-      const url = `/api/event-registration/verify-phone/${searchText}/${lastDigitPhone}`;
+      const encodedText = encodeURI(searchText);
+
+      const url = `/api/event-registration/verify-phone/${encodedText}/${lastDigitPhone}`;
       const response = await api.get(url);
 
       const mappedData = response.data.data.map((item) => ({
@@ -124,17 +127,17 @@ const SearchPage = () => {
             <form onSubmit={onSubmitSearch}>
               <div className="relative">
                 <input
-                  className="input md:!text-lg"
+                  className="input !text-xl md:font-bold md:px-4 md:py-6"
                   type="search"
                   value={searchText}
-                  onChange={(e) => setSearchText(e.target.value)}
+                  onChange={(e) => setSearchText(e.target.value.trim())}
                   placeholder="Ticket Number, Email, Phone Number"
                   required
                 />
                 <button
                   type="submit"
                   disabled={loadingSearch}
-                  className="absolute top-[0.4rem] right-3 bg-[#004FC6] px-4 py-2 text-white text-xl rounded-tr rounded-br"
+                  className="absolute top-[0.4rem] md:top-[0.48rem] right-3 bg-[#004FC6] px-4 py-2 text-white text-xl rounded-tr rounded-br"
                 >
                   <CiSearch />
                 </button>
@@ -160,10 +163,10 @@ const SearchPage = () => {
               <form onSubmit={onSubmitVerify}>
                 <div className="flex items-center gap-4 max-w-md">
                   <input
-                    className="input"
+                    className="input !text-lg font-bold"
                     type="text"
                     value={lastDigitPhone}
-                    onChange={(e) => setLastDigitPhone(e.target.value)}
+                    onChange={(e) => setLastDigitPhone(e.target.value.trim())}
                     placeholder="Enter the last 4 digits of phone number"
                     title="Enter last 4 digits of phone number"
                     pattern="\d*"

@@ -10,9 +10,11 @@ import QRCode from "react-qr-code";
 import useAxiosPrivate from "@/hooks/useAxiosPrivate";
 import toast from "react-hot-toast";
 import classNames from "classnames";
+import { useRouter } from "next/navigation";
 
 const TicketList = ({ tickets, setTickets }) => {
   const api = useAxiosPrivate();
+  const router = useRouter();
 
   const [openModal, setOpenModal] = useState(false);
   const [printableTickets, setPrintableTickets] = useState(null);
@@ -45,19 +47,20 @@ const TicketList = ({ tickets, setTickets }) => {
       try {
         await api.post("/api/event-registration/ticket/print", { ticketKeys });
 
-        const updatedTickets = tickets.map((item) => {
-          if (item.printCount === 0 && ticketKeys.includes(item.ticketKey)) {
-            return {
-              ...item,
-              printCount: 1,
-              isChecked: false,
-            };
-          }
-          return item;
-        });
+        // const updatedTickets = tickets.map((item) => {
+        //   if (item.printCount === 0 && ticketKeys.includes(item.ticketKey)) {
+        //     return {
+        //       ...item,
+        //       printCount: 1,
+        //       isChecked: false,
+        //     };
+        //   }
+        //   return item;
+        // });
 
-        setTickets(updatedTickets);
+        // setTickets(updatedTickets);
         setOpenModal(false);
+        router.replace("/event/check-in");
       } catch (error) {
         console.log(error);
       } finally {
