@@ -14,6 +14,11 @@ import toast from "react-hot-toast";
 import { encodeURI } from "@/utils/encodeURI";
 import Spinner from "@/components/Spinner";
 
+function removeSpecialCharacters(inputString) {
+  // replace special characters except those in email addresses
+  return inputString.replace(/[^\w\s@.-]/gi, "");
+}
+
 const SearchPage = () => {
   const { isAuthenticated } = useAuth();
   const router = useRouter();
@@ -38,7 +43,9 @@ const SearchPage = () => {
     setLoadingSearch(true);
 
     try {
-      const url = `/api/event-registration/find/${encodeURI(searchText)}`;
+      const clenedText = removeSpecialCharacters(searchText);
+
+      const url = `/api/event-registration/find/${clenedText}`;
       const response = await api.get(url);
 
       if (response.data.succeeded) {
@@ -61,9 +68,9 @@ const SearchPage = () => {
     setLoadingVerify(true);
 
     try {
-      const encodedText = encodeURI(searchText);
+      const clenedText = removeSpecialCharacters(searchText);
 
-      const url = `/api/event-registration/verify-phone/${encodedText}/${lastDigitPhone}`;
+      const url = `/api/event-registration/verify-phone/${clenedText}/${lastDigitPhone}`;
       const response = await api.get(url);
 
       const mappedData = response.data.data.map((item) => ({
