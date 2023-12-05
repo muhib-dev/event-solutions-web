@@ -7,30 +7,25 @@ import useAxiosPrivate from "@/hooks/useAxiosPrivate";
 import Link from "next/link";
 import { AiOutlineLogout } from "react-icons/ai";
 import TokenService from "@/services/token.service";
+import { useQuery } from "@tanstack/react-query";
 
 const Header = ({ isTextWhite = false }) => {
   const { logout, accessToken } = useAuth();
   const api = useAxiosPrivate();
 
-  const [getDataLoading, setGetDataLoading] = useState(true);
   const [userInfo, _] = useState(() => {
     return TokenService.getTokenInfo(accessToken);
   });
-  const [companyInfo, setCompanyInfo] = useState(null);
 
-  useEffect(() => {
-    api
-      .get("/api/company/info")
-      .then(({ data }) => {
-        setCompanyInfo(data.data);
-      })
-      .catch((error) => console.log(error))
-      .finally(() => {
-        setGetDataLoading(false);
-      });
-  }, [api]);
+  const { data: companyInfo, isLoading } = useQuery({
+    queryKey: ["company-info"],
+    queryFn: async () => {
+      const res = await api.get("/api/company/info");
+      return res.data?.data;
+    },
+  });
 
-  if (getDataLoading) return <h1>loading...</h1>;
+  if (isLoading) return <p className="text-lg text-center">Loading...</p>;
 
   return (
     <div className={isTextWhite ? "text-white" : "#3F3F3F"}>
@@ -60,7 +55,7 @@ const Header = ({ isTextWhite = false }) => {
       </div>
 
       <div className="flex flex-col items-center gap-1">
-        {companyInfo && (
+        {companyInfo?.logoURL && (
           <Image
             className="rounded-md overflow-hidden"
             src={companyInfo?.logoURL}

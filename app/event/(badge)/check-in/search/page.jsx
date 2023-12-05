@@ -12,6 +12,7 @@ import TicketList from "@/components/tickets/TicketList";
 import Link from "next/link";
 import toast from "react-hot-toast";
 import { encodeURI } from "@/utils/encodeURI";
+import Spinner from "@/components/Spinner";
 
 const SearchPage = () => {
   const { isAuthenticated } = useAuth();
@@ -19,6 +20,7 @@ const SearchPage = () => {
   const api = useAxiosPrivate();
 
   const [loadingSearch, setLoadingSearch] = useState(false);
+  const [loadingVerify, setLoadingVerify] = useState(false);
   const [isFoundTicket, setIsFoundTicket] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [lastDigitPhone, setLastDigitPhone] = useState("");
@@ -56,7 +58,7 @@ const SearchPage = () => {
   const onSubmitVerify = async (e) => {
     e.preventDefault();
 
-    setLoadingSearch(true);
+    setLoadingVerify(true);
 
     try {
       const encodedText = encodeURI(searchText);
@@ -76,7 +78,7 @@ const SearchPage = () => {
       const meassage = catchError(error);
       toast.error(meassage);
     } finally {
-      setLoadingSearch(false);
+      setLoadingVerify(false);
     }
   };
 
@@ -137,9 +139,9 @@ const SearchPage = () => {
                 <button
                   type="submit"
                   disabled={loadingSearch}
-                  className="absolute top-[0.4rem] md:top-[0.48rem] right-3 bg-[#004FC6] px-4 py-2 text-white text-xl rounded-tr rounded-br"
+                  className="absolute top-[0.4rem] md:top-[0.48rem] right-3 bg-[#004FC6] px-4 py-2 text-white text-xl rounded-tr rounded-br disabled:bg-blue-300"
                 >
-                  <CiSearch />
+                  {loadingSearch ? <Spinner className="block" /> : <CiSearch />}
                 </button>
               </div>
             </form>
@@ -176,10 +178,11 @@ const SearchPage = () => {
                   />
                   <button
                     type="submit"
-                    disabled={loadingSearch}
+                    disabled={loadingVerify}
                     className="btn btn-primary bg-[#37529A] text-white"
                   >
-                    Verify Ticket
+                    {loadingVerify && <Spinner className="block" />}
+                    <span>Verify Ticket</span>
                   </button>
                 </div>
               </form>

@@ -49,9 +49,9 @@ const QrCodePage = () => {
   // on success scanner
   const onSuccessScan = useCallback(
     async (code) => {
-      try {
-        setScanResultLoading(true);
+      setScanResultLoading(true);
 
+      try {
         const url = `/api/event-registration/qr-code/${code}`;
         const response = await api.get(url);
         const mappedData = response.data.data.map((item) => ({
