@@ -20,13 +20,14 @@ const config = {
 };
 
 const elementScanner = "render-qr-code";
-let successAudio = new Audio("/audio/scannerBeep.mp3");
+let urlBeep = "/audio/scannerBeep.mp3";
 
 const QrCodePage = () => {
   const { isAuthenticated } = useAuth();
   const router = useRouter();
   const api = useAxiosPrivate();
   const html5QrCode = useRef(null);
+  const successAudioRef = useRef(new Audio(urlBeep));
 
   const [isNotPermission, setIsNotPermission] = useState(false);
   const [scanResultLoading, setScanResultLoading] = useState(false);
@@ -88,7 +89,7 @@ const QrCodePage = () => {
         config,
         (code) => {
           html5QrCode.current.pause();
-          successAudio.play();
+          successAudioRef.current.play();
 
           debouncedSuccessScan(code);
         },

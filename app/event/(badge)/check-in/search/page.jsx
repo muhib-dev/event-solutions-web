@@ -14,8 +14,8 @@ import toast from "react-hot-toast";
 import { encodeURI } from "@/utils/encodeURI";
 import Spinner from "@/components/Spinner";
 
+// replace special characters except email
 function removeSpecialCharacters(inputString) {
-  // replace special characters except those in email addresses
   return inputString.replace(/[^\w\s@.-]/gi, "");
 }
 
