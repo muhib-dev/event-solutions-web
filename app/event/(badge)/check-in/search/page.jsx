@@ -136,7 +136,7 @@ const SearchPage = () => {
             <form onSubmit={onSubmitSearch}>
               <div className="relative">
                 <input
-                  className="input !text-xl md:font-bold md:px-4 md:py-6"
+                  className="input !text-lg md:font-bold md:px-4 md:py-6"
                   type="search"
                   value={searchText}
                   onChange={(e) => setSearchText(e.target.value.trim())}

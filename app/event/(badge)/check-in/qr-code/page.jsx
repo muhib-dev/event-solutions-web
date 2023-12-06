@@ -12,13 +12,15 @@ import TicketList from "@/components/tickets/TicketList";
 import Spinner from "@/components/Spinner";
 import Link from "next/link";
 import toast from "react-hot-toast";
+import useDebounce from "@/hooks/useDebounce";
 
 const config = {
   fps: 10,
-  qrbox: { width: 400, height: 350 },
+  qrbox: { width: 500, height: 400 },
 };
 
 const elementScanner = "render-qr-code";
+let successAudio = new Audio("/audio/scannerBeep.mp3");
 
 const QrCodePage = () => {
   const { isAuthenticated } = useAuth();
@@ -54,6 +56,7 @@ const QrCodePage = () => {
       try {
         const url = `/api/event-registration/qr-code/${code}`;
         const response = await api.get(url);
+
         const mappedData = response.data.data.map((item) => ({
           isChecked: item.printCount > 0 ? false : true,
           ...item,
@@ -65,9 +68,8 @@ const QrCodePage = () => {
           html5QrCode.current.stop();
         }
       } catch (error) {
-        console.log(error);
-        const meassage = catchError(error);
-        toast.error(meassage);
+        html5QrCode.current.resume();
+        toast.error(catchError(error));
       } finally {
         setScanResultLoading(false);
       }
@@ -75,17 +77,25 @@ const QrCodePage = () => {
     [api]
   );
 
+  // dely success scan
+  const debouncedSuccessScan = useDebounce(onSuccessScan, 1000);
+
   // start Scan
   const startScan = useCallback(async () => {
     if (!html5QrCode.current.isScanning) {
       html5QrCode.current.start(
         { facingMode: "environment" },
         config,
-        onSuccessScan,
+        (code) => {
+          html5QrCode.current.pause();
+          successAudio.play();
+
+          debouncedSuccessScan(code);
+        },
         (error) => console.log(error)
       );
     }
-  }, [onSuccessScan]);
+  }, [debouncedSuccessScan]);
 
   // initialize QR code
   useEffect(() => {
@@ -138,7 +148,7 @@ const QrCodePage = () => {
 
       {isTickets && <TicketList tickets={tickets} setTickets={setTickets} />}
 
-      <div className="lg:w-1/2 mx-auto">
+      <div className="md:w-3/4 lg:w-2/3 xl:w-2/5 mx-auto">
         {scanResultLoading && (
           <div className="flex justify-center items-center gap-3">
             <Spinner /> <p>loading...</p>
